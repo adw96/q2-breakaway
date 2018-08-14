@@ -26,7 +26,7 @@ plugin = qiime2.plugin.Plugin(
     citations=qiime2.plugin.Citations.load('citations.bib', package='q2_breakaway')
 )
 
-_METRIC_CHOICES = {'richness', 'shannon', 'simpson'}
+_METRIC_CHOICES = {'richness', 'chao_bunge'}
 
 plugin.methods.register_function(
     function=q2_breakaway.breakaway,
