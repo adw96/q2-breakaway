@@ -128,10 +128,14 @@ cat("breakaway R package version:", as.character(packageVersion("breakaway")), "
 
 ### ESTIMATE DIVERSITY ###
 cat("1) Estimate diversity\n")
-
-df <- summary(breakaway::breakaway(ps))
-
-df2 <- df %>% add_column("SampleNames" = ps %>% otu_table %>% sample_names)
+if (my.metric == "chao_bunge"){
+    df <- summary(breakaway::chao_bunge(ps))
+    df2 <- df %>% add_column("SampleNames" = ps %>% otu_table %>% sample_names)
+}
+if (my.metric == "richness"){
+    df <- summary(breakaway::breakaway(ps))
+    df2 <- df %>% add_column("SampleNames" = ps %>% otu_table %>% sample_names)
+}
 
 ### PRINT DIVERSITY ###
 cat("2) Write diversity estimates\n")
