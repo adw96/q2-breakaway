@@ -6,9 +6,10 @@
 This package contains the breakaway QIIME 2 plugin. To learn how to use this, see https://qiime2.org.
 
 Install phyloseq 
-conda search -c bioconda bioconductor-phyloseq
+```conda install -c bioconda -c conda-forge bioconductor-phyloseq```
 
 jsonlite
-conda install -c r r-jsonlite 
+```conda install -c r r-jsonlite```
 
-devtools
+Install devtools
+```conda install -c r r-devtools``` 
