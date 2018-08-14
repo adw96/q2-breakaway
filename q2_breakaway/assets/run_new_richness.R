@@ -62,6 +62,31 @@ print(head(the_otu_table))
 
 cat(installed.packages()[,"Package"])
 
+#Tidyverse install
+if ("tibble" %in% installed.packages()[,"Package"]) {
+    cat("You have tibble installed!\n\n")
+} else {
+    devtools::install_github("tidyverse/tibble")
+}
+cat("Whoo! You have tibble now!\n\n")
+library(tibble)
+
+#Magrittr install
+if ("magrittr" %in% installed.packages()[,"Package"]) {
+    cat("You have magrittr installed!\n\n")
+} else {
+    cat("Embarking on the journey that is installing magrittr...\n\n")
+    try1 <- try(install.packages("magrittr"), silent = T)
+    if (class(try1) == "try-error") {
+        #cat("Didn't work the first time.")
+        #try1 <- try(install.packages("tidyverse", repos='http://cran.us.r-project.org'), silent = T)
+        errQuit("Could not install tidyverse.")
+    }
+}
+cat("Whoo! You have magrittr now!\n\n")
+library(magrittr)
+
+#Devtools install (Will be installed in the README into the conda environment)
 if ("devtools" %in% installed.packages()[,"Package"]) {
     cat("Thank god! devtools is already available\n\n")
 } else {
@@ -75,6 +100,7 @@ if ("devtools" %in% installed.packages()[,"Package"]) {
 }
 cat("Hooray! You have devtools!\n\n")
 
+#Phyloseq doesn't need fto be installed here. Will be installed in conda environment in the README
 if ("phyloseq" %in% installed.packages()[,"Package"]) {
     cat("Thank god! phyloseq is already available\n\n")
 } else {
@@ -91,6 +117,7 @@ cat("Attempting to make phyloseq object...\n\n")
 
 ps <- phyloseq(otu_table(the_otu_table, taxa_are_rows = TRUE))
 
+
 cat("Embarking on the journey that is installing breakaway...\n\n")
 
 devtools::install_github("adw96/breakaway")
@@ -102,12 +129,14 @@ cat("breakaway R package version:", as.character(packageVersion("breakaway")), "
 ### ESTIMATE DIVERSITY ###
 cat("1) Estimate diversity\n")
 
-df <- summary(breakaway::sample_richness(ps))
+df <- summary(breakaway::breakaway(ps))
+
+df2 <- df %>% add_column("SampleNames" = ps %>% otu_table %>% sample_names)
 
 ### PRINT DIVERSITY ###
 cat("2) Write diversity estimates\n")
 
-write.table(df, out.file, sep = "\t",
+write.table(df2, out.file, sep = "\t",
             row.names = F,
             quote = F)
 
